@@ -50,7 +50,6 @@ composer require "spark-php/framework"
 
 - [ ] Injection
 - [ ] Generate
-- [ ] Injection
 - [ ] More
 
 
