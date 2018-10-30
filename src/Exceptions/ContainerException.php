@@ -12,7 +12,8 @@ declare(strict_types=1);
 namespace Spark\Framework\Exceptions;
 
 use \Exception;
+use Psr\Container\NotFoundExceptionInterface;
 
-class ContainerException extends Exception
+class ContainerException extends Exception implements NotFoundExceptionInterface
 {
 }

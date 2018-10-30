@@ -197,4 +197,52 @@ class ContainerTest extends TestCase
 
         $this->assertEquals(['hello, world', 12], $arrayResult);
     }
+
+    /**
+     * 测试 PSR-11 get
+     *
+     * @dataProvider containerProvider
+     * @param ContainerInterface $container
+     * @throws ContainerException
+     */
+    public function testGet(ContainerInterface $container)
+    {
+        $container->set(
+            (new ElementDefinition())
+                ->setType(TestClassB::class)
+                ->setDeferred()
+                ->setSingletonScope()
+        );
+
+        $obj1 = $container->get(TestClassB::class);
+        $obj2 = $container->get(TestClassB::class);
+
+        $this->assertSame($obj1, $obj2);
+    }
+
+    /**
+     * 测试 PSR-11 get
+     *
+     * @dataProvider containerProvider
+     * @param ContainerInterface $container
+     * @throws ContainerException
+     */
+    public function testPsrHas(ContainerInterface $container)
+    {
+        $container->set(
+            (new ElementDefinition())
+                ->setType(TestClassB::class)
+                ->setDeferred()
+                ->setSingletonScope()
+        );
+
+        $result = $container->has(TestClassC::class);
+        $this->assertFalse($result);
+
+        $result = $container->has(TestClassB::class);
+        $this->assertTrue($result);
+
+    }
+
+
 }

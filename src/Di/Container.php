@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Spark\Framework\Di;
 
+
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -19,6 +20,35 @@ use Spark\Framework\Interfaces\Di\ContainerInterface;
 
 class Container implements ContainerInterface
 {
+    /**
+     *      * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id
+     * @return mixed|object
+     * @throws ContainerException
+     * @throws \ReflectionException
+     */
+    public function get($id)
+    {
+       return  $this->getByType($id);
+    }
+
+    /**
+     *
+     *
+     * @param string $id
+     * @return bool
+     */
+    public function has($id)
+    {
+        if (!isset($this->definitionTypeMap[$id]) && !$this->searchAutoWiredNamespace($id)) {
+            return false;
+        }
+
+        return true;
+    }
+
+
     /**
      * 元素的Map
      * 是一个关联数组, 其中 key 为元素定义的实例类型
@@ -93,7 +123,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * 从容器获得一个元素产生的实例
+     * 根据名称从容器获得一个元素产生的实例
      *
      * @param string $alias
      * @return mixed|object
@@ -158,7 +188,7 @@ class Container implements ContainerInterface
             throw new ContainerException(sprintf('找不到定义: %s, 依赖栈: %s', $type, json_encode($stack)));
         }
 
-        if ($definition->isSingletonScope() and !$definition->isInstanceNull()) {
+        if ($definition->isSingletonScope() && !$definition->isInstanceNull()) {
             // 单例并且已经初始化的实例直接返回
             $result = $definition->getInstance();
             $this->assertResultType($definition, $result);
@@ -195,7 +225,7 @@ class Container implements ContainerInterface
             throw new ContainerException(sprintf('找不到别名: %s, 依赖栈: %s', $alias, json_encode($stack)));
         }
 
-        if ($definition->isSingletonScope() and !$definition->isInstanceNull()) {
+        if ($definition->isSingletonScope() && !$definition->isInstanceNull()) {
             // 单例并且已经初始化的实例直接返回
             $result = $definition->getInstance();
             $this->assertResultType($definition, $result);
@@ -318,7 +348,7 @@ class Container implements ContainerInterface
      */
     private function assertBuilderAvailable(ElementDefinition $definition)
     {
-        if (!$definition->isBuilderEqualsConstructor() and !is_callable($definition->getBuilder())) {
+        if (!$definition->isBuilderEqualsConstructor() && !is_callable($definition->getBuilder())) {
             throw new ContainerException('builder不是一个合法的回调方法');
         }
 
@@ -404,7 +434,7 @@ class Container implements ContainerInterface
     private function initializeBuilder(ElementDefinition $definition)
     {
         if (empty($definition->getBuilder())) {
-            if ($definition->isBaseType() and $definition->isInstanceNull()) {
+            if ($definition->isBaseType() && $definition->isInstanceNull()) {
                 throw new ContainerException('基本类型不支持构造方法');
             }
             //如果builder不存在, 设置类的构造方法为builder

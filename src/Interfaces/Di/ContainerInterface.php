@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Spark\Framework\Interfaces\Di;
 
+use Psr\Container\ContainerInterface as PsrContainerInterface;
 use Spark\Framework\Di\ElementDefinition;
 use Spark\Framework\Exceptions\ContainerException;
 
@@ -20,7 +21,7 @@ use Spark\Framework\Exceptions\ContainerException;
  * Interface ContainerInterface
  * @package Spark\Framework\Interfaces\Di
  */
-interface ContainerInterface
+interface ContainerInterface extends PsrContainerInterface
 {
     /**
      * 给容器设置一个元素
