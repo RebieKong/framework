@@ -23,7 +23,7 @@ composer require "spark-php/framework"
 
 ### Framework
 
-- [x] Di 
+- [x] Di
 - [x] Router
 - [x] Http
 - [x] Dispatcher
@@ -45,7 +45,7 @@ composer require "spark-php/framework"
 - [ ] rpc-client
 - [ ] rpc-server
 
- 
+
 ### advance
 
 - [ ] Injection
@@ -56,7 +56,7 @@ composer require "spark-php/framework"
 
 
 #### Thanks to
-[smile](https://github.com/vimac/smile-framework)   
+[smile](https://github.com/vimac/smile-framework)
 [Slim](https://slimframework.com)
 
 
