@@ -34,6 +34,7 @@ composer require "spark-php/framework"
 - [ ] Command
 - [ ] Event
 - [ ] Log
+- [ ] Cache
 - [ ] JobQueue
 
 
@@ -54,17 +55,13 @@ composer require "spark-php/framework"
 
 
 
-
 #### Thanks to
+
+[Slim Framework](https://github.com/slimphp/Slim/blob/3.x/LICENSE.md)
+
 [smile](https://github.com/vimac/smile-framework)
-[Slim](https://slimframework.com)
 
 
 ## License
 MIT
 
-Http component From Slim Framework :
-
-> Copyright (c) 2011-2016 Josh Lockhart
-
-> https://github.com/slimphp/Slim/blob/3.x/LICENSE.md (MIT License)
