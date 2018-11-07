@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Spark\Framework\Di;
 
-
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -30,7 +29,7 @@ class Container implements ContainerInterface
      */
     public function get($id)
     {
-       return  $this->getByType($id);
+        return  $this->getByType($id);
     }
 
     /**
@@ -47,7 +46,6 @@ class Container implements ContainerInterface
 
         return true;
     }
-
 
     /**
      * 元素的Map

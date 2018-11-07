@@ -15,13 +15,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spark\Framework\Di\Container;
 use Spark\Framework\Di\ElementDefinition;
+use Spark\Framework\Interfaces\ApplicationInterface;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
 use Spark\Framework\Interfaces\Dispatcher\DispatcherInterface;
 use Spark\Framework\Interfaces\Router\RouterInterface;
 use Spark\Framework\Provider\ContainerProvider;
 use Spark\Framework\Router\Router;
 
-class Application
+class Application implements ApplicationInterface
 {
     /**
      * @var ContainerInterface
@@ -181,5 +182,24 @@ class Application
         }
 
         return in_array($response->getStatusCode(), [204, 205, 304]);
+    }
+
+    /**
+     * @param \Psr\Container\ContainerInterface $container
+     * @return $this
+     */
+    public function setContainer(\Psr\Container\ContainerInterface $container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function get($id)
+    {
+        return $this->getContainer()->get($id);
     }
 }

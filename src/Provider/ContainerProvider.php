@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Spark\Framework\Provider;
 
-use Spark\Framework\Interfaces\Provider\ContainerProviderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spark\Framework\Common\Environment;
@@ -22,8 +21,10 @@ use Spark\Framework\Http\Request;
 use Spark\Framework\Http\Response;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
 use Spark\Framework\Interfaces\Dispatcher\DispatcherInterface;
+use Spark\Framework\Interfaces\Provider\ContainerProviderInterface;
 use Spark\Framework\Interfaces\Router\RouterInterface;
 use Spark\Framework\Router\Router;
+use Symfony\Component\Console\Application;
 
 /**
  * 框架默认的容器Provider
@@ -40,51 +41,62 @@ class ContainerProvider implements ContainerProviderInterface
     public function setupContainer(ContainerInterface $container)
     {
         $container->set(
-          (new ElementDefinition())
-            ->setType(Environment::class)
-            ->setBuilder(function () {
-                return new Environment($_SERVER);
-            })
-            ->setSingletonScope()
-            ->setAlias('environment')
+            (new ElementDefinition())
+                ->setType(Environment::class)
+                ->setBuilder(function () {
+                    return new Environment($_SERVER);
+                })
+                ->setSingletonScope()
+                ->setAlias('environment')
         );
         $container->set(
-          (new ElementDefinition())
-            ->setType(ServerRequestInterface::class)
-            ->setBuilder(function (Environment $environment) {
-                return Request::createFromEnvironment($environment);
-            })
-            ->setSingletonScope()
-            ->setAlias('request')
+            (new ElementDefinition())
+                ->setType(ServerRequestInterface::class)
+                ->setBuilder(function (Environment $environment) {
+                    return Request::createFromEnvironment($environment);
+                })
+                ->setSingletonScope()
+                ->setAlias('request')
         );
         $container->set(
-          (new ElementDefinition())
-            ->setType(ResponseInterface::class)
-            ->setBuilder(function () {
-                $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-                $response = new Response(200, $headers);
-                return $response;
-            })
-            ->setSingletonScope()
-            ->setAlias('response')
+            (new ElementDefinition())
+                ->setType(ResponseInterface::class)
+                ->setBuilder(function () {
+                    $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+                    $response = new Response(200, $headers);
+
+                    return $response;
+                })
+                ->setSingletonScope()
+                ->setAlias('response')
         );
         $container->set(
-          (new ElementDefinition())
-            ->setType(RouterInterface::class)
-            ->setBuilder(function () {
-                return new Router();
-            })
-            ->setSingletonScope()
-            ->setAlias('router')
+            (new ElementDefinition())
+                ->setType(RouterInterface::class)
+                ->setBuilder(function () {
+                    return new Router();
+                })
+                ->setSingletonScope()
+                ->setAlias('router')
         );
         $container->set(
-          (new ElementDefinition())
-            ->setType(DispatcherInterface::class)
-            ->setBuilder(function (ContainerInterface $container) {
-                return new Dispatcher($container);
-            })
-            ->setSingletonScope()
-            ->setAlias('dispatcher')
+            (new ElementDefinition())
+                ->setType(DispatcherInterface::class)
+                ->setBuilder(function (ContainerInterface $container) {
+                    return new Dispatcher($container);
+                })
+                ->setSingletonScope()
+                ->setAlias('dispatcher')
         );
+
+        $container->set((
+            (new ElementDefinition())
+                ->setType(Application::class)
+                ->setBuilder(function () {
+                    return new Application('SparkPHP');
+                })
+                ->setSingletonScope()
+                ->setAlias('console')
+        ));
     }
 }

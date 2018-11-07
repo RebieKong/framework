@@ -241,8 +241,5 @@ class ContainerTest extends TestCase
 
         $result = $container->has(TestClassB::class);
         $this->assertTrue($result);
-
     }
-
-
 }

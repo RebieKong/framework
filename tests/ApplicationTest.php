@@ -14,6 +14,7 @@ namespace Spark\Framework\Tests;
 use Spark\Framework\Application;
 use Spark\Framework\Common\Environment;
 use Spark\Framework\Exceptions\DispatcherException;
+use Spark\Framework\Interfaces\ApplicationInterface;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
 use Spark\Framework\Interfaces\Router\RouterInterface;
 use Spark\Framework\Router\Route;
@@ -155,5 +156,36 @@ class ApplicationTest extends TestCase
         ]);
         $application->loadRouterConfig($routerInit);
         $application->run();
+    }
+
+
+    public function initializeConsoleAppProvider()
+    {
+        return [
+            [
+                function (ContainerInterface $container) {
+                    $container->enableAutowiredForNamespace('Spark\\Framework\\Tests\\fixtrues');
+                }
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider initializeConsoleAppProvider
+     *
+     * @param callable $containerInit
+     * @throws \ReflectionException
+     * @throws \Spark\Framework\Exceptions\ContainerException
+     *
+     */
+    public function testConsoleApplication(callable $containerInit)
+    {
+        $application = new Application($containerInit);
+        $this->assertInstanceOf(ApplicationInterface::class, $application);
+        /** @var \Symfony\Component\Console\Application $console */
+        $console = $application->get(\Symfony\Component\Console\Application::class);
+
+        $this->assertInstanceOf(\Symfony\Component\Console\Application::class, $console);
+
     }
 }
