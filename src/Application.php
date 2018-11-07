@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spark\Framework\Di\Container;
 use Spark\Framework\Di\ElementDefinition;
+use Spark\Framework\Helper\DotArray;
 use Spark\Framework\Interfaces\ApplicationInterface;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
 use Spark\Framework\Interfaces\Dispatcher\DispatcherInterface;
@@ -28,6 +29,16 @@ class Application implements ApplicationInterface
      * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * @var DotArray
+     */
+    private $settings;
+
+    /**
+     * @var string[]
+     */
+    private $configPaths;
 
     /**
      * 应用构造方法, 这个方法接受两个参数, 分别是应用初始化容器的方法和框架默认初始化容器的Provider
@@ -74,6 +85,11 @@ class Application implements ApplicationInterface
         return $this->container;
     }
 
+    /**
+     * @param callable|null $routerLoader
+     * @throws Exceptions\ContainerException
+     * @throws \ReflectionException
+     */
     public function loadRouterConfig(callable $routerLoader = null)
     {
         /** @var Router $router */
@@ -84,6 +100,11 @@ class Application implements ApplicationInterface
         }
     }
 
+    /**
+     * @throws Exceptions\ContainerException
+     * @throws \ReflectionException
+     * @throws exceptions\RouterException
+     */
     public function run()
     {
         /** @var ServerRequestInterface $request */
@@ -201,5 +222,47 @@ class Application implements ApplicationInterface
     public function get($id)
     {
         return $this->getContainer()->get($id);
+    }
+
+    /**
+     * @param $configPath
+     * @return $this|ApplicationInterface
+     */
+    public function loadConfig($configPath)
+    {
+        if (!isset($this->configPaths[$configPath])) {
+            $this->getSettings()->merge($this->readConfig($configPath));
+            $this->configPaths[$configPath] = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $configPath
+     * @return array|ApplicationInterface
+     */
+    public function readConfig($configPath)
+    {
+        $config = [];
+        foreach (glob($configPath.'/*.php') as $file) {
+            $prefix = basename($file, '.php');
+            /* @noinspection PhpIncludeInspection */
+            $config[$prefix] = require $file;
+        }
+
+        return $config;
+    }
+
+    /**
+     * @return DotArray
+     */
+    public function getSettings()
+    {
+        if ($this->settings === null) {
+            $this->settings = new DotArray();
+        }
+
+        return $this->settings;
     }
 }

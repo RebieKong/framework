@@ -14,6 +14,7 @@ namespace Spark\Framework\Tests;
 use Spark\Framework\Application;
 use Spark\Framework\Common\Environment;
 use Spark\Framework\Exceptions\DispatcherException;
+use Spark\Framework\Helper\DotArray;
 use Spark\Framework\Interfaces\ApplicationInterface;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
 use Spark\Framework\Interfaces\Router\RouterInterface;
@@ -158,7 +159,6 @@ class ApplicationTest extends TestCase
         $application->run();
     }
 
-
     public function initializeConsoleAppProvider()
     {
         return [
@@ -186,6 +186,26 @@ class ApplicationTest extends TestCase
         $console = $application->get(\Symfony\Component\Console\Application::class);
 
         $this->assertInstanceOf(\Symfony\Component\Console\Application::class, $console);
+    }
 
+    /**
+     * @dataProvider initializeConsoleAppProvider
+     *
+     * @param callable $containerInit
+     * @throws \ReflectionException
+     * @throws \Spark\Framework\Exceptions\ContainerException
+     */
+    public function testLoadConfig(callable $containerInit)
+    {
+        $application = new Application($containerInit);
+        $this->assertInstanceOf(ApplicationInterface::class, $application);
+
+        $application->loadConfig(__DIR__ . '/fixtrues/config');
+
+        $settings = $application->getSettings();
+
+        $this->assertInstanceOf(DotArray::class, $settings);
+
+        $this->assertEquals($settings['app.foo.bar'], 'sparkPHP');
     }
 }

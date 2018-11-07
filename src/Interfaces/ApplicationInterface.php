@@ -11,6 +11,7 @@
 namespace Spark\Framework\Interfaces;
 
 use Psr\Container\ContainerInterface;
+use Spark\Framework\Helper\DotArray;
 
 interface ApplicationInterface
 {
@@ -30,4 +31,21 @@ interface ApplicationInterface
      * @return mixed
      */
     public function get($id);
+
+    /**
+     * @param $configPath
+     * @return $this
+     */
+    public function loadConfig($configPath);
+
+    /**
+     * @param $configPath
+     * @return $this
+     */
+    public function readConfig($configPath);
+
+    /**
+     * @return DotArray
+     */
+    public function getSettings();
 }

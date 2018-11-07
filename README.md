@@ -31,7 +31,7 @@ composer require "spark-php/framework"
 - [ ] Db
 - [ ] Env
 - [ ] Config
-- [ ] Command
+- [x] Command
 - [ ] Event
 - [ ] Log
 - [ ] Cache
@@ -40,7 +40,7 @@ composer require "spark-php/framework"
 
 ### component
 
-- [ ] dev-server
+- [x] dev-server
 - [ ] swoole-server
 - [ ] rpc
 - [ ] rpc-client
