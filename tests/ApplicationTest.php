@@ -200,7 +200,7 @@ class ApplicationTest extends TestCase
         $application = new Application($containerInit);
         $this->assertInstanceOf(ApplicationInterface::class, $application);
 
-        $application->loadConfig(__DIR__ . '/fixtrues/config');
+        $application->loadConfig(__DIR__.'/fixtrues/config');
 
         $settings = $application->getSettings();
 
