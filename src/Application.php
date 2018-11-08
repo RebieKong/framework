@@ -41,6 +41,11 @@ class Application implements ApplicationInterface
     private $configPaths;
 
     /**
+     * @var bool
+     */
+    private $bootstrap;
+
+    /**
      * 应用构造方法, 这个方法接受两个参数, 分别是应用初始化容器的方法和框架默认初始化容器的Provider
      *
      * Application constructor.
@@ -54,19 +59,19 @@ class Application implements ApplicationInterface
         //初始化容器, 并把容器自身的引用放入容器中
         $container = new Container();
         $container->set(
-          (new ElementDefinition())
-            ->setType(ContainerInterface::class)
-            ->setInstance($container)
-            ->setAlias('container')
+            (new ElementDefinition())
+                ->setType(ContainerInterface::class)
+                ->setInstance($container)
+                ->setAlias('container')
         );
 
         //初始化ContainerProvider
         /** @var ContainerProvider $providerInstance */
         $providerInstance = new $provider;
         $container->set(
-          (new ElementDefinition())
-            ->setType($provider)
-            ->setInstance($providerInstance)
+            (new ElementDefinition())
+                ->setType($provider)
+                ->setInstance($providerInstance)
         );
         $providerInstance->setupContainer($container);
 
@@ -139,10 +144,10 @@ class Application implements ApplicationInterface
         if (!headers_sent()) {
             // Status
             header(sprintf(
-              'HTTP/%s %s %s',
-              $response->getProtocolVersion(),
-              $response->getStatusCode(),
-              $response->getReasonPhrase()
+                'HTTP/%s %s %s',
+                $response->getProtocolVersion(),
+                $response->getStatusCode(),
+                $response->getReasonPhrase()
             ));
 
             // Headers
@@ -212,6 +217,7 @@ class Application implements ApplicationInterface
     public function setContainer(\Psr\Container\ContainerInterface $container)
     {
         $this->container = $container;
+
         return $this;
     }
 
@@ -264,5 +270,36 @@ class Application implements ApplicationInterface
         }
 
         return $this->settings;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap()
+    {
+        if (!$this->bootstrap) {
+            $this->loadCommands();
+            // do something
+            $this->bootstrap = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    private function loadCommands()
+    {
+        /** @var \Symfony\Component\Console\Application $console */
+        $console = $this->get(\Symfony\Component\Console\Application::class);
+        $commands = $this->settings['app.commands'];
+        if ($commands) {
+            foreach ($commands as $command) {
+                $console->add($this->get($command));
+            }
+        }
+
+        return $this;
     }
 }

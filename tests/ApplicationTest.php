@@ -79,12 +79,12 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider initializeProvider
      * @param callable $containerInit
      * @param callable $routerInit
      * @throws \ReflectionException
      * @throws \Spark\Framework\Exceptions\ContainerException
+     * @throws \Spark\Framework\exceptions\RouterException
      */
     public function testApplication(callable $containerInit, callable $routerInit)
     {
@@ -106,12 +106,12 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     *
      * @dataProvider AnotherInitializeProvider
      * @param callable $containerInit
      * @param callable $routerInit
      * @throws \ReflectionException
      * @throws \Spark\Framework\Exceptions\ContainerException
+     * @throws \Spark\Framework\exceptions\RouterException
      */
     public function testAnotherApplication(callable $containerInit, callable $routerInit)
     {

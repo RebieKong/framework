@@ -48,4 +48,9 @@ interface ApplicationInterface
      * @return DotArray
      */
     public function getSettings();
+
+    /**
+     * @return $this
+     */
+    public function bootstrap();
 }
