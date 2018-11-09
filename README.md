@@ -28,19 +28,19 @@ composer require "spark-php/framework"
 - [x] Http
 - [x] Dispatcher
 - [x] Application
-- [ ] Db
-- [ ] Env
-- [ ] Config
+- [x] dev-server
+- [x] Env
+- [x] Config
 - [x] Command
 - [ ] Event
 - [ ] Log
 - [ ] Cache
 - [ ] JobQueue
+- [ ] Db
 
 
 ### component
 
-- [x] dev-server
 - [ ] swoole-server
 - [ ] rpc
 - [ ] rpc-client
