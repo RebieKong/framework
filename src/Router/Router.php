@@ -87,7 +87,7 @@ class Router implements RouterInterface
                 return $route;
             }
         }
-        return null;
+        return (new Route());
     }
 
     /**

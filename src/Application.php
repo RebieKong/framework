@@ -92,6 +92,7 @@ class Application implements ApplicationInterface
 
     /**
      * @param callable|null $routerLoader
+     * @return $this
      * @throws Exceptions\ContainerException
      * @throws \ReflectionException
      */
@@ -235,6 +236,8 @@ class Application implements ApplicationInterface
     /**
      * @param $configPath
      * @return $this|ApplicationInterface
+     * @throws Exceptions\ContainerException
+     * @throws \ReflectionException
      */
     public function loadConfig($configPath)
     {
@@ -249,6 +252,8 @@ class Application implements ApplicationInterface
     /**
      * @param $configPath
      * @return array|ApplicationInterface
+     * @throws Exceptions\ContainerException
+     * @throws \ReflectionException'
      */
     public function readConfig($configPath)
     {
