@@ -80,7 +80,7 @@ class WebServeCommand extends BaseCommand
 
         $web = new WMWebServer("http://{$this->config['app.wm.host']}:{$this->config['app.wm.port']}");
         $web->count = $this->config['app.wm.count'];
-        $web->addRoot('spark.com', __DIR__.'/../../public');
+        $web->addRoot('spark.com', APP_PATH.'/public');
         Worker::$pidFile = APP_PATH . '/runtime/wm_http.pid';
         Worker::runAll();
     }
