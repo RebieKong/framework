@@ -12,7 +12,6 @@ namespace Spark\Framework\Wm;
 
 use Spark\Framework\Command\BaseCommand;
 use Spark\Framework\Interfaces\Di\ContainerInterface;
-use Spark\Framework\WebServer\WMWebServer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
