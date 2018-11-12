@@ -132,7 +132,7 @@ class SwooleServerCommand extends BaseCommand
     {
         $this->container->set((
         (new ElementDefinition())
-        ->setType(HttpRequestFactoryInterface::class)
+            ->setType(HttpRequestFactoryInterface::class)
             ->setInstance(new RequestFactory())
         ));
     }
@@ -147,7 +147,7 @@ class SwooleServerCommand extends BaseCommand
                 $options[$name] = $default;
             }
         }
-        $this->server = $server = new HttpServer($options['host'], $options['port']);
+        $this->server = $server = new HttpServer($options['host'], (int)$options['port']);
         $output->writeln("<info>Listening on http://{$options['host']}:{$options['port']}</>");
         $handler = $this->container->get(isset($options['server_handler']) ? $options['server_handler'] : ServerHandler::class);
         $handler->setOptions($options);
