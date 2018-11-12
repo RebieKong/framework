@@ -8,7 +8,7 @@
  * @license  https://github.com/spark-php/framework
  */
 
-namespace Spark\Framework\WebServer;
+namespace Spark\Framework\Wm;
 
 use Workerman\Protocols\Http;
 
