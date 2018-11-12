@@ -259,7 +259,8 @@ class Application implements ApplicationInterface
             $config[$prefix] = require $file;
         }
 
-        $this->container->set((new ElementDefinition())
+        $this->container->set(
+            (new ElementDefinition())
             ->setType(DotArray::class)
             ->setInstance((new DotArray($config)))
             ->setSingletonScope()
@@ -315,6 +316,4 @@ class Application implements ApplicationInterface
 
         return $this;
     }
-
-    
 }

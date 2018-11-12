@@ -1,4 +1,12 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ * This file is part of Spark Framework.
+ *
+ * @link     https://github.com/spark-php/framework
+ * @document https://github.com/spark-php/framework
+ * @contact  itwujunze@gmail.com
+ * @license  https://github.com/spark-php/framework
+ */
 
 namespace Spark\Framework\WebServer;
 
@@ -60,12 +68,11 @@ class WMWebServer extends \Workerman\WebServer
         Http::header('Content-Type: application/json;charset=utf-8');
         Http::header('X-Powered-By: SparkPHP', true);
 
-        if (strtolower($_SERVER['HTTP_CONNECTION']) === "keep-alive") {
+        if (strtolower($_SERVER['HTTP_CONNECTION']) === 'keep-alive') {
             $connection->send($content);
         } else {
             $connection->close($content);
         }
         chdir($workerman_cwd);
     }
-
 }
