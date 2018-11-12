@@ -33,7 +33,7 @@ class WMWebServer extends \Workerman\WebServer
 
             return;
         }
-        $rootDir = $this->serverRoot[$_SERVER['SERVER_NAME']] ?: current($this->serverRoot);
+        $rootDir = $this->serverRoot[$_SERVER['SERVER_NAME']] ?? current($this->serverRoot);
 
         $index = $rootDir['root'].'/' . self::INDEX_FILE;
 
