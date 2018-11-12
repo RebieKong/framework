@@ -14,6 +14,8 @@ use Workerman\Protocols\Http;
 
 class WMWebServer extends \Workerman\WebServer
 {
+    const INDEX_FILE = 'index.php';
+
     /**
      *  rewrite http request
      *
@@ -31,9 +33,9 @@ class WMWebServer extends \Workerman\WebServer
 
             return;
         }
-        $rootDir = isset($this->serverRoot[$_SERVER['SERVER_NAME']]) ? $this->serverRoot[$_SERVER['SERVER_NAME']] : current($this->serverRoot);
+        $rootDir = $this->serverRoot[$_SERVER['SERVER_NAME']] ?: current($this->serverRoot);
 
-        $index = $rootDir['root'].'/index.php';
+        $index = $rootDir['root'].'/' . self::INDEX_FILE;
 
         if (!file_exists($index)) {
             Http::header('HTTP/1.1 404 Not Found');
@@ -42,7 +44,7 @@ class WMWebServer extends \Workerman\WebServer
             return;
         }
         $indexFile = realpath($index);
-        $workerman_cwd = getcwd();
+        $wmCwd = getcwd();
         chdir($rootDir['root']);
         ini_set('display_errors', 'off');
         ob_start();
@@ -73,6 +75,6 @@ class WMWebServer extends \Workerman\WebServer
         } else {
             $connection->close($content);
         }
-        chdir($workerman_cwd);
+        chdir($wmCwd);
     }
 }
