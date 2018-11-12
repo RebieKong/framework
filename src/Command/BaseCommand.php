@@ -18,7 +18,7 @@ abstract class BaseCommand extends Command
     /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     public function __construct(ContainerInterface $container)
     {

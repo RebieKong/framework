@@ -103,6 +103,8 @@ class Application implements ApplicationInterface
         if (isset($routerLoader)) {
             call_user_func($routerLoader, $router);
         }
+
+        return $this;
     }
 
     /**
@@ -257,6 +259,13 @@ class Application implements ApplicationInterface
             $config[$prefix] = require $file;
         }
 
+        $this->container->set((new ElementDefinition())
+            ->setType(DotArray::class)
+            ->setInstance((new DotArray($config)))
+            ->setSingletonScope()
+            ->setAlias('config')
+        );
+
         return $config;
     }
 
@@ -278,8 +287,12 @@ class Application implements ApplicationInterface
     public function bootstrap()
     {
         if (!$this->bootstrap) {
-            $this->loadCommands();
+            //cli mod load commands
+            if (PHP_SAPI == 'cli') {
+                $this->loadCommands();
+            }
             // do something
+
             $this->bootstrap = true;
         }
 
@@ -302,4 +315,6 @@ class Application implements ApplicationInterface
 
         return $this;
     }
+
+    
 }
