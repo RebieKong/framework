@@ -20,7 +20,7 @@ use Spark\Framework\Interfaces\Di\ContainerInterface;
 class Container implements ContainerInterface
 {
     /**
-     *      * Finds an entry of the container by its identifier and returns it.
+     * Finds an entry of the container by its identifier and returns it.
      *
      * @param string $id
      * @return mixed|object
@@ -72,7 +72,9 @@ class Container implements ContainerInterface
      */
     private $autowiredNamespaces = [];
 
-    /**给容器设置一个元素
+    /**
+     * 给容器设置一个元素
+     *
      * @param ElementDefinition $definition
      * @throws ContainerException
      * @throws \ReflectionException
